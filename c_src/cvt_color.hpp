@@ -80,7 +80,6 @@ int cvt_color_888_to_565(
     bool target_bgr = (dst == BGR565);
 
     if (target_bgr) {
-#pragma omp parallel for
         for (size_t i = 0; i < num_pixels; ++i) {
             size_t index = i * 3;
             uint16_t r = data[index + r_offset];
@@ -91,7 +90,6 @@ int cvt_color_888_to_565(
             allocated_data[i] = (format565>>8) | (format565<<8);
         }
     } else {
-#pragma omp parallel for
         for (size_t i = 0; i < num_pixels; ++i) {
             size_t index = i * 3;
             uint16_t r = data[index + r_offset];
