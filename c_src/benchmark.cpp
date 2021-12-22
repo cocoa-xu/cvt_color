@@ -22,6 +22,7 @@ int main() {
     const size_t height = 2160*2;
 
     {
+        std::cout << "convert " << width << "x" << height << " for " << num_repeat << " times\n";
         size_t size = 0;
         uint8_t * data = generate_888(width, height, &size);
         if (data == nullptr) return -1;
@@ -38,8 +39,8 @@ int main() {
             }
         }
         auto end = std::chrono::high_resolution_clock::now();
-        auto ns_int = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+        auto ns_int = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
         std::cout << "convert from RGB888 => RGB565: ";
-        std::cout << ns_int.count() / 1.f / num_repeat << "ns per " << width << "x" << height << "\n";
+        std::cout << ns_int.count() / 1.f / num_repeat << "ms per convert" << "\n";
     }
 }
