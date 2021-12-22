@@ -9,7 +9,7 @@ endif
 
 .DEFAULT_GLOBAL := build
 
-build: $(ST7789_SO)
+build: $(CVT_COLOR_SO)
 
 $(CVT_COLOR_SO): c_src/cvt_color.cpp c_src/nif_utils.hpp
 	@ mkdir -p $(PRIV_DIR)
