@@ -8,22 +8,34 @@ defmodule CvtColor.MixProject do
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       compilers: [:elixir_make] ++ Mix.compilers(),
-      deps: deps()
+      description: description(),
+      package: package(),
+      deps: deps(),
+      source_url: "https://github.com/cocoa-xu/cvt_color"
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
   def application do
-    [
-      extra_applications: [:logger]
-    ]
+    []
   end
 
-  # Run "mix help deps" to learn about dependencies.
+  defp description() do
+    "Functions for converting image color"
+  end
+
   defp deps do
     [
       {:elixir_make, "~> 0.6"},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false}
+    ]
+  end
+
+  defp package() do
+    [
+      name: "cvt_color",
+      files: ~w(c_src lib .formatter.exs mix.exs README* LICENSE*),
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => "https://github.com/cocoa-xu/cvt_color"}
     ]
   end
 end
