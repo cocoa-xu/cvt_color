@@ -1,6 +1,12 @@
 # CvtColor
 
-**TODO: Add description**
+Functions for converting image color.
+
+Currently supported pairs:
+- `:bgr888`, `:bgr565`
+- `:bgr888`, `:rgb565`
+- `:rgb888`, `:bgr565`
+- `:rgb888`, `:rgb565`
 
 ## Installation
 
