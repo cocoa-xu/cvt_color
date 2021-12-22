@@ -1,18 +1,20 @@
 defmodule CvtColor do
   @moduledoc """
-  Documentation for `CvtColor`.
+  Color convert function
   """
 
   @doc """
-  Hello world.
+  Convert color
 
-  ## Examples
-
-      iex> CvtColor.hello()
-      :world
-
+  - **image_data**: source image data. binary.
+  - **src_color**: source image color.
+    - :bgr888
+    - :rgb888
+  - **dst_color**: destination image color
+    - :bgr565
+    - :rgb565
   """
-  def hello do
-    :world
+  def cvt(image_data, src_color, dst_color) do
+    CvtColor.Nif.cvt_color(image_data, src_color, dst_color)
   end
 end
