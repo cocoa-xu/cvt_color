@@ -3,6 +3,7 @@ project(cvt_color)
 
 file(GLOB cvt_color_lib_sources CONFIGURE_DEPENDS "${C_SRC}/cvt_color.cpp" "${C_SRC}/*.hpp")
 file(GLOB cvt_color_benchmark_sources CONFIGURE_DEPENDS "${C_SRC}/benchmark.cpp" "${C_SRC}/cvt_color.hpp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -undefined dynamic_lookup -fPIC -I${ERTS_INCLUDE_DIR} -O3 -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
 
 add_executable(cvt_color.so ${cvt_color_lib_sources})
 set_property(TARGET cvt_color.so PROPERTY CXX_STANDARD 14)
@@ -11,6 +12,7 @@ set_target_properties(cvt_color.so PROPERTIES
     INSTALL_RPATH_USE_LINK_PATH TRUE
     BUILD_WITH_INSTALL_RPATH TRUE
 )
+set_property(TARGET cvt_color.so PROPERTY COMPILE_OPTIONS "-dynamiclib")
 
 add_executable(cvt_color_benchmark ${cvt_color_benchmark_sources})
 set_property(TARGET cvt_color_benchmark PROPERTY CXX_STANDARD 14)
@@ -18,8 +20,5 @@ set_property(TARGET cvt_color_benchmark PROPERTY CXX_STANDARD 14)
 if(UNIX AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -shared")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -undefined dynamic_lookup -dynamiclib")
     set(CMAKE_SHARED_LINKER_FLAGS "-bundle -flat_namespace -undefined suppress")
 endif()
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -I${ERTS_INCLUDE_DIR} -O3 -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
