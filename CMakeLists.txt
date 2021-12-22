@@ -16,10 +16,10 @@ add_executable(cvt_color_benchmark ${cvt_color_benchmark_sources})
 set_property(TARGET cvt_color_benchmark PROPERTY CXX_STANDARD 14)
 
 if(UNIX AND NOT APPLE)
-    target_compile_options(cvt_color.so PUBLIC "-shared")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -shared")
 else()
-    target_compile_options(cvt_color.so PUBLIC "-undefined dynamic_lookup -dynamiclib")
-    target_link_options(cvt_color.so PUBLIC "-bundle -flat_namespace -undefined suppress")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -undefined dynamic_lookup -dynamiclib")
+    set(CMAKE_SHARED_LINKER_FLAGS "-bundle -flat_namespace -undefined suppress")
 endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -I${ERTS_INCLUDE_DIR} -O3 -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers")
