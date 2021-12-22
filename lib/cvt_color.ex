@@ -8,11 +8,17 @@ defmodule CvtColor do
 
   - **image_data**: source image data. binary.
   - **src_color**: source image color.
-    - :bgr888
-    - :rgb888
+    - `:bgr888`
+    - `:rgb888`
   - **dst_color**: destination image color
-    - :bgr565
-    - :rgb565
+    - `:bgr565`
+    - `:rgb565`
+
+  Currently supported pairs:
+    - `:bgr888`, `:bgr565`
+    - `:bgr888`, `:rgb565`
+    - `:rgb888`, `:bgr565`
+    - `:rgb888`, `:rgb565`
   """
   def cvt(image_data, src_color, dst_color) do
     CvtColor.Nif.cvt_color(image_data, src_color, dst_color)
