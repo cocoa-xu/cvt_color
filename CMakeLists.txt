@@ -21,7 +21,7 @@ set_property(TARGET cvt_color_benchmark PROPERTY CXX_STANDARD 14)
 if(OpenMP_CXX_FOUND)
     target_link_libraries(cvt_color.so PUBLIC OpenMP::OpenMP_CXX)
     target_link_libraries(cvt_color_benchmark PUBLIC OpenMP::OpenMP_CXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS} -DUSE_OPENMP=1")
 endif()
 
 if(UNIX AND NOT APPLE)

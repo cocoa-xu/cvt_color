@@ -2,9 +2,12 @@
 #define __CVT_COLOR_HPP__
 
 #pragma once
-#include <omp.h>
 #include <stdint.h>
 #include <functional>
+
+#ifdef USE_OPENMP
+#include <omp.h>
+#endif
 
 typedef enum {
     RGB888,     // 24bit
@@ -79,8 +82,10 @@ int cvt_color_888_to_565(
         b_offset = 0;
     }
     bool target_bgr = (dst == BGR565);
+#ifdef USE_OPENMP
     int n_jobs = omp_get_num_procs();
     int chunk_size = num_pixels / n_jobs;
+#endif
     if (target_bgr) {
 #pragma omp parallel for schedule(static, chunk_size)
         for (size_t i = 0; i < num_pixels; ++i) {
