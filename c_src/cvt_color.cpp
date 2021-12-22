@@ -70,7 +70,7 @@ static ErlNifFunc nif_functions[] = {
     {"cvt_color", 3, cvt_color_nif, 0}
 };
 
-ERL_NIF_INIT(cvt_color_nif, nif_functions, on_load, on_reload, on_upgrade, NULL);
+ERL_NIF_INIT(Elixir.CvtColor.Nif, nif_functions, on_load, on_reload, on_upgrade, NULL);
 
 #if defined(__GNUC__)
 #pragma GCC visibility push(default)
