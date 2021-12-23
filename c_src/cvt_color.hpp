@@ -140,7 +140,7 @@ int cvt_color_888_to_666(
     const std::function<void*(size_t)>& alloc_func)
 {
     *out_size = size;
-    uint16_t * allocated_data = (uint16_t *)alloc_func(*out_size);
+    uint8_t * allocated_data = (uint8_t *)alloc_func(*out_size);
     if (allocated_data == nullptr) return 1;
 
     *out_data = (uint8_t *)allocated_data;
