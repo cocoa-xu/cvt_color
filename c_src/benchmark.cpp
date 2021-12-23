@@ -8,9 +8,9 @@ uint8_t * generate_888(size_t width, size_t height, size_t * size) {
     uint8_t val = 0;
     for (size_t row = 0; row < height; ++row) {
         for (size_t col = 0; col < width; ++col) {
-            data[row * height + col * width + 0] = val++;
-            data[row * height + col * width + 1] = val++;
-            data[row * height + col * width + 2] = val++;
+            data[row * width + col * 3 + 0] = val++;
+            data[row * width + col * 3 + 1] = val++;
+            data[row * width + col * 3 + 2] = val++;
         }
     }
     return data;
