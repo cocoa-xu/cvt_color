@@ -4,6 +4,7 @@
 #pragma once
 #include <stdint.h>
 #include <functional>
+#include <cstring>
 
 #ifdef USE_OPENMP
 #include <omp.h>
