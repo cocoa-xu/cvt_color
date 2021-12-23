@@ -28,6 +28,10 @@ static ERL_NIF_TERM cvt_color_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM a
                 color src = color::RGB888, dst = color::RGB565;
                 if (source_color == "bgr888") src = color::BGR888;
                 if (target_color == "bgr565") dst = color::BGR565;
+
+                if (target_color == "rgb666") dst = color::RGB666;
+                if (target_color == "bgr666") dst = color::BGR666;
+
                 uint8_t * out_data = nullptr;
                 size_t out_size = 0;
                 int ret = cvt_color(binary.data, binary.size, src, dst, &out_data, &out_size, [&result](size_t bytes) {

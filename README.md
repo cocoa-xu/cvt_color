@@ -21,6 +21,21 @@ Currently supported pairs:
 | `:bgr888` | `:rgb565` |
 | `:rgb888` | `:bgr565` |
 | `:rgb888` | `:rgb565` |
+| `:bgr888` | `:bgr666` |
+| `:bgr888` | `:rgb666` |
+| `:rgb888` | `:bgr666` |
+| `:rgb888` | `:rgb666` |
+
+Each component in `bgr666` and `rgb666` takes 8bit space, but only bits in MSB(7-2) are valid. 
+
+```
+ MSB 7                                       LSB
+┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
+│  X  │  X  │  X  │  X  │  X  │  X  │  -  │  -  │
+└─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘
+```
+
+`X` indicates valid bit. `-` indicates ignored bit. 
 
 ## Installation
 
