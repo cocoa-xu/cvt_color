@@ -13,7 +13,6 @@ set_target_properties(cvt_color.so PROPERTIES
     INSTALL_RPATH_USE_LINK_PATH TRUE
     BUILD_WITH_INSTALL_RPATH TRUE
 )
-set_property(TARGET cvt_color.so PROPERTY COMPILE_OPTIONS "-dynamiclib")
 
 add_executable(cvt_color_benchmark ${cvt_color_benchmark_sources})
 set_property(TARGET cvt_color_benchmark PROPERTY CXX_STANDARD 14)
@@ -29,4 +28,5 @@ if(UNIX AND NOT APPLE)
 else()
     set(CMAKE_SHARED_LINKER_FLAGS "-bundle -undefined suppress")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -undefined dynamic_lookup")
+    set_property(TARGET cvt_color.so PROPERTY COMPILE_OPTIONS "-dynamiclib")
 endif()
