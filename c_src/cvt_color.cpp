@@ -14,7 +14,7 @@
 
 static ERL_NIF_TERM cvt_color_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
     if (argc != 3) {
-        return erlang::nif::error(env, "expecting 3 arguments: image_data, channel_order_source, channel_order_target");
+        return erlang::nif::error(env, "expecting 3 arguments: image_data, source_color, target_color");
     }
 
     std::string source_color, target_color;
