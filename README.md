@@ -2,6 +2,17 @@
 
 Functions for converting image color.
 
+| OS               | Build Status |
+|------------------|--------------|
+| Ubuntu 20.04     | [![CI](https://github.com/cocoa-xu/cvt_color/actions/workflows/linux-build.yml/badge.svg)](https://github.com/cocoa-xu/evision/actions/workflows/linux-build.yml) |
+| macOS 11         | [![CI](https://github.com/cocoa-xu/cvt_color/actions/workflows/macos-build.yml/badge.svg)](https://github.com/cocoa-xu/evision/actions/workflows/macos-build.yml) |
+
+## Usage
+
+```elixir
+bgr565_data = CvtColor.cvt(binary_data, :bgr888, :bgr565)
+```
+
 Currently supported pairs:
 
 | src color | dst color |
@@ -10,12 +21,6 @@ Currently supported pairs:
 | `:bgr888` | `:rgb565` |
 | `:rgb888` | `:bgr565` |
 | `:rgb888` | `:rgb565` |
-
-## Usage
-
-```elixir
-bgr565_data = CvtColor.cvt(binary_data, :bgr888, :bgr565)
-```
 
 ## Installation
 
