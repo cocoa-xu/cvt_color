@@ -23,7 +23,7 @@ static ERL_NIF_TERM cvt_color_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM a
     ErlNifBinary binary;
     if (enif_inspect_binary(env, argv[0], &binary)) {
         if (source_color == "rgb888" || source_color == "bgr888") {
-            if (binary.size % 24 == 0) {
+            if (binary.size % 3 == 0) {
                 ErlNifBinary result;
                 color src = color::RGB888, dst = color::RGB565;
                 if (source_color == "bgr888") src = color::BGR888;

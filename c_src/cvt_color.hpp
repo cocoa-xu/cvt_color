@@ -71,7 +71,7 @@ int cvt_color_888_to_565(
     size_t * out_size,
     const std::function<void*(size_t)>& alloc_func)
 {
-    *out_size = size / 24 * 16;
+    *out_size = size / 3 * 2;
     uint16_t * allocated_data = (uint16_t *)alloc_func(*out_size);
     if (allocated_data == nullptr) return 1;
 
