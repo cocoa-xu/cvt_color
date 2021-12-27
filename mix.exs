@@ -4,7 +4,7 @@ defmodule CvtColor.MixProject do
   def project do
     [
       app: :cvt_color,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       compilers: [:elixir_make] ++ Mix.compilers(),
@@ -33,7 +33,7 @@ defmodule CvtColor.MixProject do
   defp package() do
     [
       name: "cvt_color",
-      files: ~w(c_src lib .formatter.exs mix.exs README* LICENSE*),
+      files: ~w(c_src lib .formatter.exs mix.exs README* LICENSE* Makefile CMakeLists.txt),
       licenses: ["Apache-2.0"],
       links: %{"GitHub" => "https://github.com/cocoa-xu/cvt_color"}
     ]
