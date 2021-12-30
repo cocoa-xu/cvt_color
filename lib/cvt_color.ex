@@ -32,6 +32,7 @@ defmodule CvtColor do
     - `:rgb888`, `:bgr666_compact`
     - `:rgb888`, `:rgb666_compact`
   """
+  @spec cvt(bitstring, Atom.t(), Atom.t()) :: binary | {:error, String.t()}
   def cvt(image_data, src_color, dst_color) do
     CvtColor.Nif.cvt_color(image_data, src_color, dst_color)
   end
