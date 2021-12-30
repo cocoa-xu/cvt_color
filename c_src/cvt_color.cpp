@@ -31,6 +31,8 @@ static ERL_NIF_TERM cvt_color_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM a
 
                 if (target_color == "rgb666") dst = color::RGB666;
                 if (target_color == "bgr666") dst = color::BGR666;
+                if (target_color == "rgb666_compact") dst = color::RGB666Compact;
+                if (target_color == "bgr666_compact") dst = color::BGR666Compact;
 
                 uint8_t * out_data = nullptr;
                 size_t out_size = 0;

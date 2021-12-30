@@ -1,9 +1,14 @@
 #include "cvt_color.hpp"
 #include <chrono>
 #include <iostream>
+#include <inttypes.h>
 
 uint8_t * generate_888(size_t width, size_t height, size_t * size) {
-    uint8_t * data = (uint8_t *)malloc(sizeof(uint8_t) * width * height * 3);
+    size_t bytes = sizeof(uint8_t) * width * height * 3;
+    uint8_t * data = (uint8_t *)malloc(bytes);
+    printf("number of bytes allocated: %" PRIu64 ", %p\n", bytes, data);
+    fflush(stdout);
+
     *size = sizeof(uint8_t) * width * height * 3;
     uint8_t val = 0;
     for (size_t row = 0; row < height; ++row) {
@@ -31,7 +36,7 @@ int main() {
         for (size_t i = 0; i < num_repeat; ++i) {
             uint8_t * out_data = nullptr;
             size_t out_size = 0;
-            int ret = cvt_color(data, size, color::RGB888, color::RGB565, &out_data, &out_size, malloc);
+            int ret = cvt_color(data, size, color::RGB888, color::RGB666Compact, &out_data, &out_size, malloc);
             if (ret != 0) {
                 return -1;
             } else {

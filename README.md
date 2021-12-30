@@ -25,6 +25,10 @@ Currently supported pairs:
 | `:bgr888` | `:rgb666` |
 | `:rgb888` | `:bgr666` |
 | `:rgb888` | `:rgb666` |
+| `:bgr888` | `:bgr666_compact` |
+| `:bgr888` | `:rgb666_compact` |
+| `:rgb888` | `:bgr666_compact` |
+| `:rgb888` | `:rgb666_compact` |
 
 Each component in `bgr666` and `rgb666` takes 8bit space, but only bits in MSB(7-2) are valid. 
 
@@ -35,7 +39,15 @@ Each component in `bgr666` and `rgb666` takes 8bit space, but only bits in MSB(7
 └─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘
 ```
 
-`X` indicates valid bit. `-` indicates ignored bit. 
+`X` indicates valid bit. `-` indicates ignored bit.
+
+An example of `:rgb666_compact` is shown below. Each rectangle indicates 1 bit.
+
+```
+┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┐
+│R5│R4│R3│R2│R1│R0│G5│G4│G3│G2│G1│G0│B5│B4│B3│B2│B1│B0│
+└──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┘
+```
 
 ## Installation
 
