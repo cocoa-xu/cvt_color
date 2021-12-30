@@ -45,7 +45,7 @@ int main() {
         }
         auto end = std::chrono::high_resolution_clock::now();
         auto ns_int = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-        std::cout << "convert from RGB888 => RGB565: ";
+        std::cout << "convert from RGB888 => RGB666Compact: ";
         std::cout << ns_int.count() / 1.f / num_repeat << "ms per convert" << "\n";
 
         free((void *)data);
