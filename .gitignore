@@ -27,4 +27,4 @@ cvt_color-*.tar
 
 .DS_Store
 .idea/
-
+cmake-build-*/
