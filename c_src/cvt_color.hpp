@@ -32,6 +32,9 @@ static int cvt_color(
     color dst,
     uint8_t ** out_data,
     size_t * out_size,
+#ifdef USE_OPENMP
+    size_t min_chunk_size,
+#endif
     const std::function<void*(size_t)>& alloc_func
 );
 
@@ -42,6 +45,9 @@ static int cvt_color_888_to_565(
     color dst,
     uint8_t ** out_data,
     size_t * out_size,
+#ifdef USE_OPENMP
+    size_t min_chunk_size,
+#endif
     const std::function<void*(size_t)>& alloc_func
 );
 
@@ -52,6 +58,9 @@ static int cvt_color_888_to_666(
     color dst,
     uint8_t ** out_data,
     size_t * out_size,
+#ifdef USE_OPENMP
+    size_t min_chunk_size,
+#endif
     const std::function<void*(size_t)>& alloc_func
 );
 
@@ -62,6 +71,9 @@ static int cvt_color_888_to_666compact(
     color dst,
     uint8_t ** out_data,
     size_t * out_size,
+#ifdef USE_OPENMP
+    size_t min_chunk_size,
+#endif
     const std::function<void*(size_t)>& alloc_func
 );
 
@@ -72,7 +84,11 @@ int cvt_color(
     color dst,
     uint8_t ** out_data,
     size_t * out_size,
-    const std::function<void*(size_t)>& alloc_func)
+#ifdef USE_OPENMP
+    size_t min_chunk_size,
+#endif
+    const std::function<void*(size_t)>& alloc_func
+)
 {
     if (out_data == nullptr || out_size == nullptr) return 1;
     if (src == dst) {
@@ -84,15 +100,27 @@ int cvt_color(
     }
 
     if ((src == RGB888 || src == BGR888) && (dst == RGB565 || dst == BGR565)) {
+#ifdef USE_OPENMP
+        return cvt_color_888_to_565(data, size, src, dst, out_data, out_size, min_chunk_size, alloc_func);
+#else
         return cvt_color_888_to_565(data, size, src, dst, out_data, out_size, alloc_func);
+#endif
     }
 
     if ((src == RGB888 || src == BGR888) && (dst == RGB666 || dst == BGR666)) {
+#ifdef USE_OPENMP
+        return cvt_color_888_to_666(data, size, src, dst, out_data, out_size, min_chunk_size, alloc_func);
+#else
         return cvt_color_888_to_666(data, size, src, dst, out_data, out_size, alloc_func);
+#endif
     }
 
     if ((src == RGB888 || src == BGR888) && (dst == RGB666Compact || dst == BGR666Compact)) {
+#ifdef USE_OPENMP
+        return cvt_color_888_to_666compact(data, size, src, dst, out_data, out_size, min_chunk_size, alloc_func);
+#else
         return cvt_color_888_to_666compact(data, size, src, dst, out_data, out_size, alloc_func);
+#endif
     }
 
     return 1;
@@ -105,7 +133,11 @@ int cvt_color_888_to_565(
     color dst,
     uint8_t ** out_data,
     size_t * out_size,
-    const std::function<void*(size_t)>& alloc_func)
+#ifdef USE_OPENMP
+    size_t min_chunk_size,
+#endif
+    const std::function<void*(size_t)>& alloc_func
+)
 {
     *out_size = size / 3 * 2;
     uint16_t * allocated_data = (uint16_t *)alloc_func(*out_size);
@@ -121,7 +153,10 @@ int cvt_color_888_to_565(
     bool target_bgr = (dst == BGR565);
 #ifdef USE_OPENMP
     int n_jobs = omp_get_num_procs();
-    int chunk_size = num_pixels / n_jobs;
+    size_t chunk_size = num_pixels / n_jobs;
+    if (chunk_size < min_chunk_size) {
+        chunk_size = min_chunk_size;
+    }
 #endif
 
     if (!target_bgr) {
@@ -151,7 +186,11 @@ int cvt_color_888_to_666(
     color dst,
     uint8_t ** out_data,
     size_t * out_size,
-    const std::function<void*(size_t)>& alloc_func)
+#ifdef USE_OPENMP
+    size_t min_chunk_size,
+#endif
+    const std::function<void*(size_t)>& alloc_func
+)
 {
     *out_size = size;
     uint8_t * allocated_data = (uint8_t *)alloc_func(*out_size);
@@ -176,7 +215,10 @@ int cvt_color_888_to_666(
     bool target_bgr = (dst == BGR666);
 #ifdef USE_OPENMP
     int n_jobs = omp_get_num_procs();
-    int chunk_size = num_pixels / n_jobs;
+    size_t chunk_size = num_pixels / n_jobs;
+    if (chunk_size < min_chunk_size) {
+        chunk_size = min_chunk_size;
+    }
 #endif
 
     if (!target_bgr) {
@@ -203,7 +245,11 @@ int cvt_color_888_to_666compact(
     color dst,
     uint8_t ** out_data,
     size_t * out_size,
-    const std::function<void*(size_t)>& alloc_func)
+#ifdef USE_OPENMP
+    size_t min_chunk_size,
+#endif
+    const std::function<void*(size_t)>& alloc_func
+)
 {
     size_t bits = size / 3 * 18;
     size_t bytes = (bits >> 3) + ((bits & 0x07) != 0);
@@ -230,7 +276,10 @@ int cvt_color_888_to_666compact(
 
 #ifdef USE_OPENMP
     int n_jobs = omp_get_num_procs();
-    int chunk_size = num_pixels / n_jobs;
+    size_t chunk_size = num_pixels / n_jobs;
+    if (chunk_size < min_chunk_size) {
+        chunk_size = min_chunk_size;
+    }
 #endif
 
     if (!target_bgr) {

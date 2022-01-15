@@ -13,8 +13,8 @@
 #endif
 
 static ERL_NIF_TERM cvt_color_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
-    if (argc != 3) {
-        return erlang::nif::error(env, "expecting 3 arguments: image_data, source_color, target_color");
+    if (argc != 4) {
+        return erlang::nif::error(env, "expecting 4 arguments: image_data, source_color, target_color, min_chunk_size");
     }
 
     std::string source_color, target_color;
@@ -34,9 +34,19 @@ static ERL_NIF_TERM cvt_color_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM a
                 if (target_color == "rgb666_compact") dst = color::RGB666Compact;
                 if (target_color == "bgr666_compact") dst = color::BGR666Compact;
 
+#ifdef USE_OPENMP
+                ErlNifUInt64 min_chunk_size;
+                if (!enif_get_uint64(env, argv[3], &min_chunk_size)) {
+                    return erlang::nif::error(env, "expecting min_chunk_size to be unsigned 64-bit integer");
+                }
+#endif
                 uint8_t * out_data = nullptr;
                 size_t out_size = 0;
+#ifdef USE_OPENMP
+                int ret = cvt_color(binary.data, binary.size, src, dst, &out_data, &out_size, min_chunk_size, [&result](size_t bytes) {
+#else
                 int ret = cvt_color(binary.data, binary.size, src, dst, &out_data, &out_size, [&result](size_t bytes) {
+#endif
                     enif_alloc_binary(bytes, &result);
                     return result.data;
                 });
@@ -70,10 +80,8 @@ static int on_upgrade(ErlNifEnv*, void**, void**, ERL_NIF_TERM)
     return 0;
 }
 
-#define F(NAME, ARITY) {#NAME, ARITY, NAME, 0}
-
 static ErlNifFunc nif_functions[] = {
-    {"cvt_color", 3, cvt_color_nif, 0}
+    {"cvt_color", 4, cvt_color_nif, ERL_NIF_DIRTY_JOB_IO_BOUND}
 };
 
 ERL_NIF_INIT(Elixir.CvtColor.Nif, nif_functions, on_load, on_reload, on_upgrade, NULL);

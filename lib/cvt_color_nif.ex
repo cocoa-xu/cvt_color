@@ -12,5 +12,5 @@ defmodule CvtColor.Nif do
     end
   end
 
-  def cvt_color(_image_data, _source_color, _target_color), do: :erlang.nif_error(:not_loaded)
+  def cvt_color(_image_data, _source_color, _target_color, _min_chunk_size), do: :erlang.nif_error(:not_loaded)
 end
