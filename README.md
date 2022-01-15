@@ -138,9 +138,9 @@ int main() {
     pthread_t main_pid = pthread_self();
     pthread_t omp_pid;
 #pragma omp parallel for schedule(static, 2)
-	for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 1; i++) {
         omp_pid = pthread_self();
-	}
-	printf("%s\n", main_pid == omp_pid ? "ok" : "oops");
+    }
+    printf("%s\n", main_pid == omp_pid ? "ok" : "oops");
 }
 ```
