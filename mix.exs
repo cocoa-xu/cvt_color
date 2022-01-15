@@ -1,6 +1,7 @@
 defmodule CvtColor.MixProject do
   use Mix.Project
 
+  @repo_url "https://github.com/cocoa-xu/cvt_color"
   def project do
     [
       app: :cvt_color,
@@ -11,7 +12,7 @@ defmodule CvtColor.MixProject do
       description: description(),
       package: package(),
       deps: deps(),
-      source_url: "https://github.com/cocoa-xu/cvt_color"
+      source_url: @repo_url
     ]
   end
 
@@ -35,7 +36,7 @@ defmodule CvtColor.MixProject do
       name: "cvt_color",
       files: ~w(c_src lib .formatter.exs mix.exs README* LICENSE* Makefile CMakeLists.txt),
       licenses: ["Apache-2.0"],
-      links: %{"GitHub" => "https://github.com/cocoa-xu/cvt_color"}
+      links: %{"GitHub" => @repo_url}
     ]
   end
 end
