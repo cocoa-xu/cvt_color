@@ -40,12 +40,13 @@ jobs:
 
       - name: Benchmark (C++)
         run: |
-          # min_chunk_size: 64 KB
+          # OpenMP with min_chunk_size: 64 KB/256 KB/1 MB
           _build/test/lib/cvt_color/cmake/cvt_color_benchmark 65536
-          # min_chunk_size: 256 KB
           _build/test/lib/cvt_color/cmake/cvt_color_benchmark 262144
-          # min_chunk_size: 1 MB
           _build/test/lib/cvt_color/cmake/cvt_color_benchmark 1048576
+
+          # vs. single thread
+          OMP_NUM_THREADS=1 _build/test/lib/cvt_color/cmake/cvt_color_benchmark
 
       - name: Mix Test
         run: mix test

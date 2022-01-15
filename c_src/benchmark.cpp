@@ -5,6 +5,9 @@
 #include <limits.h>
 #include <vector>
 #include <string>
+#ifdef USE_OPENMP
+#include <omp.h>
+#endif
 
 uint8_t * generate_888(size_t width, size_t height, size_t * size) {
     size_t bytes = sizeof(uint8_t) * width * height * 3;
@@ -60,6 +63,7 @@ int main(int argc, const char ** argv) {
     {
 #ifdef USE_OPENMP
         std::cout << "USE_OPENMP=ON\n";
+        std::cout << "omp_get_max_threads: " << omp_get_max_threads() << '\n';
         std::cout << "min_chunk_size: " << min_chunk_size << '\n';
 #else
         std::cout << "USE_OPENMP=OFF\n";
