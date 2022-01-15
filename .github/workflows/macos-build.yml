@@ -43,3 +43,6 @@ jobs:
           _build/test/lib/cvt_color/cmake/cvt_color_benchmark 262144
           # min_chunk_size: 1 MB
           _build/test/lib/cvt_color/cmake/cvt_color_benchmark 1048576
+
+      - name: Mix Test
+        run: mix test
