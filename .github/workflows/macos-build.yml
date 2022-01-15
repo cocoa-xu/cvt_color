@@ -16,6 +16,7 @@ jobs:
     runs-on: macos-11
     env:
       MIX_ENV: test
+      CVT_COLOR_BUILD_BENCHMARK: ON
 
     steps:
       - uses: actions/checkout@v2
