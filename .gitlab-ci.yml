@@ -16,6 +16,8 @@ build:
   script:
     - DEBIAN_FRONTEND=noninteractive apt update -q -y
     - DEBIAN_FRONTEND=noninteractive apt install -y gcc g++ build-essential cmake
+    - mix local.hex --force
+    - mix local.rebar --force
     - mix deps.get
     - mix deps.compile
     - mix compile
