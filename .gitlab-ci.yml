@@ -14,8 +14,8 @@ build:
       - mix.lock
       - .gitlab-ci.yml
   script:
-    - apt update -q -y
-    - apt install gcc g++ build-essential cmake
+    - DEBIAN_FRONTEND=noninteractive apt update -q -y
+    - DEBIAN_FRONTEND=noninteractive apt install -y gcc g++ build-essential cmake
     - mix deps.get
     - mix deps.compile
     - mix compile
