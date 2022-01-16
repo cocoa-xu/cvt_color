@@ -32,12 +32,12 @@ defmodule CvtColor do
     - `:rgb888`, `:bgr666_compact`
     - `:rgb888`, `:rgb666_compact`
 
-  - **min_chunk_size**: Optional. Only valid when OpenMP is enabled.
-    Default value: 65535
+  - **chunk_size**: Optional. Only valid when OpenMP is enabled.
+    Default value: 0. automatically set the chunk size
   """
-  @spec cvt(bitstring, Atom.t(), Atom.t(), Integer.t()) :: binary | {:error, String.t()}
-  def cvt(image_data, src_color, dst_color, min_chunk_size \\ 65535)
-  def cvt(image_data, src_color, dst_color, min_chunk_size) when min_chunk_size > 0 do
-    CvtColor.Nif.cvt_color(image_data, src_color, dst_color, min_chunk_size)
+  @spec cvt(bitstring, Atom.t(), Atom.t(), List.t()) :: binary | {:error, String.t()}
+  def cvt(image_data, src_color, dst_color, chunk_size \\ 0)
+  def cvt(image_data, src_color, dst_color, chunk_size) when chunk_size >= 0 do
+    CvtColor.Nif.cvt_color(image_data, src_color, dst_color, chunk_size)
   end
 end

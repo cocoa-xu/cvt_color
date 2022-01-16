@@ -47,7 +47,7 @@ void get_number(const char * str, size_t& number) {
 
     if (result <= 0) {
         std::cout << "The value should be a positive integer value\n";
-        std::cout << "usage: cvt_color_benchmark width height [num_repeat] [min_chunk_size]\n";
+        std::cout << "usage: cvt_color_benchmark width height [num_repeat] [chunk_size]\n";
         exit(0);
     }
 
@@ -64,9 +64,9 @@ int main(int argc, const char ** argv) {
     if (argc >= 4) get_number(argv[3], num_repeat);
 
 #ifdef USE_OPENMP
-    size_t min_chunk_size = 65535;
+    size_t chunk_size = 65535;
     if (argc == 5) {
-        get_number(argv[4], min_chunk_size);
+        get_number(argv[4], chunk_size);
     }
 #endif
 
@@ -74,7 +74,7 @@ int main(int argc, const char ** argv) {
 #ifdef USE_OPENMP
         std::cout << "USE_OPENMP=ON\n";
         std::cout << "omp_get_max_threads: " << omp_get_max_threads() << '\n';
-        std::cout << "min_chunk_size: " << min_chunk_size << '\n';
+        std::cout << "chunk_size: " << chunk_size << '\n';
 #else
         std::cout << "USE_OPENMP=OFF\n";
 #endif
@@ -92,7 +92,7 @@ int main(int argc, const char ** argv) {
                 uint8_t * out_data = nullptr;
                 size_t out_size = 0;
 #ifdef USE_OPENMP
-                int ret = cvt_color(data, size, color::RGB888, dst_color, &out_data, &out_size, min_chunk_size, malloc);
+                int ret = cvt_color(data, size, color::RGB888, dst_color, &out_data, &out_size, chunk_size, malloc);
 #else
                 int ret = cvt_color(data, size, color::RGB888, dst_color, &out_data, &out_size, malloc);
 #endif

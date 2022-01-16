@@ -32,8 +32,13 @@ bgr565_data = CvtColor.cvt(binary_data, :bgr888, :bgr565)
 
 If you have OpenMP enabled, see more details about this in the Optional Config section below.
 ```elixir
-min_chunk_size = 65536
-bgr565_data = CvtColor.cvt(binary_data, :bgr888, :bgr565, min_chunk_size)
+chunk_size = 65536
+bgr565_data = CvtColor.cvt(binary_data, :bgr888, :bgr565, chunk_size)
+
+# to balance the task
+# set chunk_size to 0 or do not pass anything
+bgr565_data = CvtColor.cvt(binary_data, :bgr888, :bgr565, 0)
+bgr565_data = CvtColor.cvt(binary_data, :bgr888, :bgr565)
 ```
 
 Currently supported pairs:
@@ -85,7 +90,17 @@ pixels from `1_000_000` to `1_999_999` will be assigned to core 1, and so on. Th
 following pseudocode:
 
 ```
-chunk_size = number_of_pixels / ${OMP_NUM_THREADS};
+if not specified chunk_size
+    chunk_size = number_of_pixels / ${OMP_NUM_THREADS};
+    if chunk_size is 0
+        # the result of the integer division is 0
+        # which means that number_of_pixels < ${OMP_NUM_THREADS}
+        # then a single thread is good enough
+        # unless ${OMP_NUM_THREADS} is really a large value
+        # e.g., ${OMP_NUM_THREADS} > 1_000_000 or even larger
+        chunk_size = number_of_pixels
+    endif
+endif
 ```
 
 However, when you have a relatively fewer number of pixels, say `255`, then the time of starting ~`${OMP_NUM_THREADS}` new
@@ -99,48 +114,3 @@ You can test and find a good value on your device using the benchmark program. T
 the environment variable `CVT_COLOR_BUILD_BENCHMARK` to `ON`.
 
 Or you can pass different values to `CvtColor.cvt_color/4` and pick the one that satisfies your requirement.
-
-#### Total #pixel > min_chunk_size
-If `chunk_size` is less than `CVT_COLOR_MIN_CHUNK_SIZE`, then `chunk_size` will be set to `CVT_COLOR_MIN_CHUNK_SIZE`. For
-instance, say you have `255` pixels and `${OMP_NUM_THREADS}` is `10`, then the `chunk_size` will be `25`. Now we compare
-the `chunk_size` with `CVT_COLOR_MIN_CHUNK_SIZE`, say `CVT_COLOR_MIN_CHUNK_SIZE` is `200`, then `chunk_size` will be raised
-to `CVT_COLOR_MIN_CHUNK_SIZE`. In this case, OpenMP will start one more thread, main thread will get pixels from `0` to `199` 
-and the new thread will need to process pixels from `200` to `254`.
-
-Thread 1
-```
-pixels
-┌───┬───┬───┬───┬───┐
-│ 0 │ 1 │ 2 │...│199│
-└───┴───┴───┴───┴───┘
-```
-
-Thread 2
-```
-pixels
-┌───┬───┬───┬───┐
-│200│201│...│254│
-└───┴───┴───┴───┘
-```
-
-#### Total #pixel <= min_chunk_size
-In this case, no new threads will be spawned, therefore it will act exactly the same as the single thread approach. (This 
-may not be true as it depends on the implementation, but almost surely every implementation takes care of this condition).
-
-To verify the behaviour of the OpenMP implementation on your machine, you can compile the following code and see the result.
-If it prints "ok", then you don't need to worry anything.
-```c
-#include <stdio.h>
-#include <pthread.h>
-#include <omp.h>
-
-int main() {
-    pthread_t main_pid = pthread_self();
-    pthread_t omp_pid;
-#pragma omp parallel for schedule(static, 2)
-    for (int i = 0; i < 1; i++) {
-        omp_pid = pthread_self();
-    }
-    printf("%s\n", main_pid == omp_pid ? "ok" : "oops");
-}
-```
