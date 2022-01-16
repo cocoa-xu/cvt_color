@@ -23,4 +23,4 @@ build:
     - mix compile
     - _build/test/lib/cvt_color/cmake/cvt_color_benchmark
     - OMP_NUM_THREADS=1 _build/test/lib/cvt_color/cmake/cvt_color_benchmark
-    - MIX_ENV=test mix test
+    - mix test
