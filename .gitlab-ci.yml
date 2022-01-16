@@ -4,6 +4,7 @@ build:
   variables:
     MIX_ENV: 'test'
     CVT_COLOR_BUILD_BENCHMARK: 'ON'
+    DEBIAN_FRONTEND: 'noninteractive'
   only:
     changes:
       - c_src/**
