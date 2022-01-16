@@ -197,18 +197,34 @@ int cvt_color_888_to_666(
     *out_size = size;
     uint8_t * allocated_data = (uint8_t *)alloc_func(*out_size);
     if (allocated_data == nullptr) return 1;
+    size_t num_pixels = size / 3;
 
     *out_data = (uint8_t *)allocated_data;
-    if (src == BGR888 && dst == BGR666) {
+    if ((src == BGR888 && dst == BGR666) || (src == RGB888 && dst == RGB666)) {
+#ifdef USE_OPENMP
+        int n_jobs = omp_get_max_threads();
+        if (chunk_size == 0) {
+            chunk_size = num_pixels / n_jobs;
+            if (chunk_size == 0) chunk_size = size;
+            chunk_size = pow(2, ceil(log(chunk_size)/log(2)));
+        }
+
+        int n_tasks = ceil((double)(num_pixels) / chunk_size);
+#pragma omp parallel for
+        for (size_t i = 0; i < n_tasks; ++i) {
+            size_t start = chunk_size * 3 * i;
+            size_t end = start + chunk_size * 3;
+            if (end > size) {
+                end = size;
+            }
+            memcpy(allocated_data + start, data + start, end - start);
+        }
+#else
         memcpy(*out_data, data, size);
-        return 0;
-    }
-    if (src == RGB888 && dst == RGB666) {
-        memcpy(*out_data, data, size);
+#endif
         return 0;
     }
 
-    size_t num_pixels = size / 3;
     size_t r_offset = 0, b_offset = 2;
     if (src == BGR888) {
         r_offset = 2;
