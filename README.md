@@ -131,7 +131,7 @@ Note that RGB888 to RGB666 is basically `memcpy`. `RGB666C.` in the table below 
 Time unit is milliseconds.
 
 | Platform           | #threads | chunk_size | RGB666C. | RGB666 | RGB565 |
-|--------------------|---------:|-----------:|---------:|--------|--------|
+|--------------------|---------:|-----------:|---------:|-------:|-------:|
 | GitHub CI Linux    |        2 |      256   |    36.62 |  40.03 |  40.73 |
 | GitHub CI Linux    |        2 |        1 K |    35.79 |  40.46 |  39.46 |
 | GitHub CI Linux    |        2 |       16 K |    35.43 |  40.29 |  37.97 |
