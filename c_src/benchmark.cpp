@@ -45,8 +45,8 @@ void get_number(const char * str, size_t& number) {
         }
     }
 
-    if (result <= 0) {
-        std::cout << "The value should be a positive integer value\n";
+    if (result < 0) {
+        std::cout << "The value should be a non-negative integer value\n";
         std::cout << "usage: cvt_color_benchmark width height [num_repeat] [chunk_size]\n";
         exit(0);
     }
