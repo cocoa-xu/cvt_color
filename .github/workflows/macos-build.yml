@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - '**/README.md'
       - '.github/workflows/linux-*'
+      - '.gitlab-ci.yml'
   workflow_dispatch:
 
 jobs:
