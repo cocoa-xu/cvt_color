@@ -157,8 +157,8 @@ int cvt_color_888_to_565(
     if (chunk_size == 0) {
         chunk_size = num_pixels / n_jobs;
         if (chunk_size == 0) chunk_size = num_pixels;
+        chunk_size = pow(2, ceil(log(chunk_size)/log(2)));
     }
-    chunk_size = pow(2, ceil(log(chunk_size)/log(2)));
 #endif
 
     if (!target_bgr) {
@@ -220,8 +220,8 @@ int cvt_color_888_to_666(
     if (chunk_size == 0) {
         chunk_size = num_pixels / n_jobs;
         if (chunk_size == 0) chunk_size = num_pixels;
+        chunk_size = pow(2, ceil(log(chunk_size)/log(2)));
     }
-    chunk_size = pow(2, ceil(log(chunk_size)/log(2)));
 #endif
 
     if (!target_bgr) {
@@ -282,8 +282,8 @@ int cvt_color_888_to_666compact(
     if (chunk_size == 0) {
         chunk_size = num_pixels / n_jobs;
         if (chunk_size == 0) chunk_size = num_pixels;
+        chunk_size = pow(2, ceil(log(chunk_size)/log(2)));
     }
-    chunk_size = pow(2, ceil(log(chunk_size)/log(2)));
 #endif
 
     if (!target_bgr) {
