@@ -1,0 +1,32 @@
+image: elixir:1.13
+build:
+  stage: build
+  variables:
+    MIX_ENV: test
+    CVT_COLOR_BUILD_BENCHMARK: ON
+  only:
+    changes:
+      - c_src/**
+      - lib/**
+      - test/**
+      - '*.exs'
+      - mix.lock
+      - .gitlab-ci.yml
+  script:
+    - apt update -q -y
+    - apt install gcc g++ build-essential cmake
+    - mix deps.get
+    - mix deps.compile
+    - mix compile
+
+test:
+  stage: test
+  variable:
+    MIX_ENV: test
+  script:
+    - _build/test/lib/cvt_color/cmake/cvt_color_benchmark 65536
+    - _build/test/lib/cvt_color/cmake/cvt_color_benchmark 262144
+    - _build/test/lib/cvt_color/cmake/cvt_color_benchmark 1048576
+    - OMP_NUM_THREADS=1 _build/test/lib/cvt_color/cmake/cvt_color_benchmark
+    - mix test
+
