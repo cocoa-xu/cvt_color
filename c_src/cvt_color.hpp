@@ -209,7 +209,7 @@ int cvt_color_888_to_666(
             chunk_size = pow(2, ceil(log(chunk_size)/log(2)));
         }
 
-        int n_tasks = ceil((double)(num_pixels) / chunk_size);
+        size_t n_tasks = ceil((double)(num_pixels) / chunk_size);
 #pragma omp parallel for
         for (size_t i = 0; i < n_tasks; ++i) {
             size_t start = chunk_size * 3 * i;
