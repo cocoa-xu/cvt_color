@@ -38,10 +38,8 @@ jobs:
 
       - name: Benchmark (C++)
         run: |
-          # OpenMP with min_chunk_size: 64 KB/256 KB/1 MB
-          _build/test/lib/cvt_color/cmake/cvt_color_benchmark 65536
-          _build/test/lib/cvt_color/cmake/cvt_color_benchmark 262144
-          _build/test/lib/cvt_color/cmake/cvt_color_benchmark 1048576
+          # OpenMP
+          _build/test/lib/cvt_color/cmake/cvt_color_benchmark
 
           # vs. single thread
           OMP_NUM_THREADS=1 _build/test/lib/cvt_color/cmake/cvt_color_benchmark

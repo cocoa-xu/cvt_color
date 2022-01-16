@@ -27,36 +27,46 @@ uint8_t * generate_888(size_t width, size_t height, size_t * size) {
     return data;
 }
 
+void get_number(const char * str, size_t& number) {
+    char *eptr;
+    long long result = strtoll(str, &eptr, 10);
+    if (result == 0)
+    {
+        if (errno == EINVAL) {
+            std::cout << "Conversion error occurred: " << errno << '\n';
+            exit(0);
+        }
+    }
+
+    if (result == LLONG_MIN || result == LLONG_MAX) {
+        if (errno == ERANGE) {
+            std::cout << "The value provided was out of range\n";
+            exit(0);
+        }
+    }
+
+    if (result <= 0) {
+        std::cout << "The value should be a positive integer value\n";
+        std::cout << "usage: cvt_color_benchmark width height [num_repeat] [min_chunk_size]\n";
+        exit(0);
+    }
+
+    number = result;
+}
+
 int main(int argc, const char ** argv) {
-    const size_t num_repeat = 100;
-    const size_t width = 3840*2;
-    const size_t height = 2160*2;
+    size_t width = 3840*2;
+    size_t height = 2160*2;
+    size_t num_repeat = 100;
+
+    if (argc >= 2) get_number(argv[1], width);
+    if (argc >= 3) get_number(argv[2], height);
+    if (argc >= 4) get_number(argv[3], num_repeat);
 
 #ifdef USE_OPENMP
     size_t min_chunk_size = 65535;
-    if (argc == 2) {
-        char *eptr;
-        long long result = strtoll(argv[1], &eptr, 10);
-        if (result == 0)
-        {
-            if (errno == EINVAL) {
-                std::cout << "Conversion error occurred: " << errno << '\n';
-                exit(0);
-            }
-        }
-
-        if (result == LLONG_MIN || result == LLONG_MAX) {
-            if (errno == ERANGE) {
-                std::cout << "The value provided was out of range\n";
-                exit(0);
-            }
-        }
-
-        if (result <= 0) {
-            std::cout << "min_chunk_size should be a positive integer value\n";
-            exit(0);
-        }
-        min_chunk_size = result;
+    if (argc == 5) {
+        get_number(argv[4], min_chunk_size);
     }
 #endif
 
